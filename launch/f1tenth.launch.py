@@ -171,6 +171,20 @@ def launch_setup(context, *args, **kwargs):
         condition=IfCondition(LaunchConfiguration('rviz'))
     )
 
+    ### YOLO_PERCEPTION
+    yolo_racecar_detector_launch = IncludeLaunchDescription(
+    PythonLaunchDescriptionSource(
+        launch_file_path=PathJoinSubstitution(
+            [pkg_prefix, 'launch/components', 'f1tenth_yolo_racecar_detector.launch.py']
+        )
+    ),
+    launch_arguments={
+        'yolo_racecar_detector_param_file': PathJoinSubstitution([pkg_prefix, 'config/yolo_perception/yolo_racecar_detector.param.yaml']),
+    }.items(),
+    condition=IfCondition(LaunchConfiguration('launch_yolo_racecar_detector'))
+    )
+
+
     return [
         global_parameter_loader_launch,
         vehicle_launch,
@@ -180,6 +194,7 @@ def launch_setup(context, *args, **kwargs):
         localization_launch,
         control_launch,
         autoware_api_launch,
+        yolo_racecar_detector_launch,
         rviz2
     ]
 
@@ -225,6 +240,8 @@ def generate_launch_description():
     add_launch_arg('mapping', 'false')
     # Planning
     add_launch_arg('use_trajectory_loader', 'true')
+    # yolo perception
+    add_launch_arg('launch_yolo_racecar_detector', 'true')
 
     return LaunchDescription([
         *declared_arguments,

@@ -1,0 +1,6 @@
+/**:
+  ros__parameters:
+    onnx_model_path: "models/yolov8m.onnx"
+    trt_engine_path: "engines/engine_yolov8m.trt"
+    confidendce_threshold: 0.5
+    nms_threshold: 0.4
